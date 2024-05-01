@@ -9,7 +9,8 @@ import 'library_service.dart';
 const kFixedListAmount = 5; // local, radio, podcasts, newplaylist, favs
 
 class LibraryModel extends SafeChangeNotifier {
-  LibraryModel(this._service);
+  LibraryModel({required LibraryService libraryService})
+      : _service = libraryService;
 
   final LibraryService _service;
   StreamSubscription<bool>? _likedAudiosSub;
@@ -50,8 +51,6 @@ class LibraryModel extends SafeChangeNotifier {
         _service.podcastsChanged.listen((event) => notifyListeners());
     _stationsSub ??=
         _service.starredStationsChanged.listen((event) => notifyListeners());
-    _lastPositionsSub ??=
-        _service.lastPositionsChanged.listen((_) => notifyListeners());
     _updatesChangedSub ??=
         _service.updatesChanged.listen((_) => notifyListeners());
     _favTagsSub ??= _service.favTagsChanged.listen((_) => notifyListeners());
@@ -334,9 +333,4 @@ class LibraryModel extends SafeChangeNotifier {
 
   int get podcastIndex => _service.podcastIndex;
   void setPodcastIndex(int value) => _service.setPodcastIndex(value);
-
-  Map<String, Duration>? get lastPositions => _service.lastPositions;
-  Duration? getLastPosition(String? url) => _service.getLastPosition(url);
-  void addLastPosition(String url, Duration lastPosition) =>
-      _service.addLastPosition(url, lastPosition);
 }

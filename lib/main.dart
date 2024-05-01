@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dart_discord_rpc/dart_discord_rpc.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:github/github.dart';
@@ -53,13 +54,22 @@ Future<void> main(List<String> args) async {
 
   final libraryService = LibraryService();
 
+  if (Platform.isLinux || Platform.isWindows) {
+    DiscordRPC.initialize();
+    DiscordRPC rpc = DiscordRPC(
+      applicationId: '1235321910221602837',
+    );
+    getIt.registerSingleton<DiscordRPC>(rpc, dispose: (s) => s.shutDown());
+  }
+
   final playerService = PlayerService(
     controller: VideoController(
       Player(
         configuration: const PlayerConfiguration(title: 'MusicPod'),
       ),
     ),
-    libraryService: libraryService,
+    discordRPC:
+        Platform.isLinux || Platform.isWindows ? getIt<DiscordRPC>() : null,
   );
   await playerService.init();
 
@@ -132,7 +142,7 @@ Future<void> main(List<String> args) async {
     dispose: (s) => s.dispose(),
   );
   getIt.registerSingleton<LibraryModel>(
-    LibraryModel(libraryService),
+    LibraryModel(libraryService: libraryService),
     dispose: (s) => s.dispose(),
   );
   getIt.registerSingleton<LocalAudioModel>(

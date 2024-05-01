@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
+  dart_discord_rpc
   file_selector_windows
   irondash_engine_context
   media_kit_libs_windows_video

@@ -5,6 +5,7 @@ import '../../../build_context_x.dart';
 import '../../../common.dart';
 import '../../../data.dart';
 import '../../../get.dart';
+import '../../../player.dart';
 import '../../common/explore_online_popup.dart';
 import '../../l10n/l10n.dart';
 import '../../library/library_model.dart';
@@ -58,7 +59,7 @@ class PodcastPage extends StatelessWidget with WatchItMixin {
 
     final subscribed = libraryModel.podcastSubscribed(pageId);
 
-    watchPropertyValue((LibraryModel m) => m.lastPositions?.length);
+    watchPropertyValue((PlayerModel m) => m.lastPositions?.length);
     watchPropertyValue((LibraryModel m) => m.downloadsLength);
 
     final checkingForUpdates =

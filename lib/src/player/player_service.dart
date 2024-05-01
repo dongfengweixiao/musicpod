@@ -4,6 +4,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:dart_discord_rpc/dart_discord_rpc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart' hide PlayerState;
 import 'package:media_kit_video/media_kit_video.dart';
@@ -14,20 +16,20 @@ import 'package:smtc_windows/smtc_windows.dart';
 
 import '../../constants.dart';
 import '../../data.dart';
-import '../../library.dart';
 import '../../online_album_art_utils.dart';
-import '../../string_x.dart';
 import '../../persistence_utils.dart';
+import '../../string_x.dart';
 import '../../theme.dart';
 
 class PlayerService {
   PlayerService({
-    required this.controller,
-    required this.libraryService,
-  });
+    required VideoController controller,
+    DiscordRPC? discordRPC,
+  })  : _controller = controller,
+        _discordRPC = discordRPC;
 
-  final VideoController controller;
-  final LibraryService libraryService;
+  final VideoController _controller;
+  final DiscordRPC? _discordRPC;
 
   MPRIS? _mpris;
   SMTCWindows? _smtc;
@@ -42,7 +44,8 @@ class PlayerService {
   StreamSubscription<Tracks>? _tracksSub;
   StreamSubscription<double>? _rateSub;
 
-  Player get _player => controller.player;
+  Player get _player => _controller.player;
+  VideoController get controller => _controller;
 
   final _queueController = StreamController<bool>.broadcast();
   Stream<bool> get queueChanged => _queueController.stream;
@@ -250,6 +253,10 @@ class PlayerService {
   Future<void> init() async {
     await _initMediaControl();
 
+    _lastPositions = (await getSettings(kLastPositionsFileName)).map(
+      (key, value) => MapEntry(key, value.parsedDuration ?? Duration.zero),
+    );
+
     _isPlayingSub = _player.stream.playing.listen((value) {
       setIsPlaying(value);
     });
@@ -421,9 +428,21 @@ class PlayerService {
       );
     }
 
-    _position = libraryService.getLastPosition(_audio?.url);
+    _position = getLastPosition(_audio?.url);
     _estimateNext();
     await _play(newPosition: _position);
+    _discordRPC?.start(autoRegister: true);
+    _discordRPC?.updatePresence(
+      DiscordPresence(
+        state: 'Listening to ${_audio?.title} on $kAppTitle',
+        details: 'https://github.com/ubuntu-flutter-community/musicpod',
+        startTimeStamp: DateTime.now().millisecondsSinceEpoch,
+        largeImageKey: 'large_image',
+        largeImageText: 'This text describes the large image.',
+        smallImageKey: 'small_image',
+        smallImageText: 'This text describes the small image.',
+      ),
+    );
   }
 
   Color? _color;
@@ -484,7 +503,7 @@ class PlayerService {
     if (_audio?.audioType == AudioType.radio ||
         _audio?.url == null ||
         _position == null) return;
-    libraryService.addLastPosition(_audio!.url!, _position!);
+    addLastPosition(_audio!.url!, _position!);
   }
 
   Future<void> _initMediaControl() async {
@@ -740,8 +759,30 @@ class PlayerService {
     _radioHistoryController.add(true);
   }
 
+  //
+  // last positions
+  //
+  Map<String, Duration> _lastPositions = {};
+  Map<String, Duration> get lastPositions => _lastPositions;
+  final _lastPositionsController = StreamController<bool>.broadcast();
+  Stream<bool> get lastPositionsChanged => _lastPositionsController.stream;
+  void addLastPosition(String url, Duration lastPosition) {
+    writeSetting(url, lastPosition.toString(), kLastPositionsFileName)
+        .then((_) {
+      if (_lastPositions.containsKey(url) == true) {
+        _lastPositions.update(url, (value) => lastPosition);
+      } else {
+        _lastPositions.putIfAbsent(url, () => lastPosition);
+      }
+      _lastPositionsController.add(true);
+    });
+  }
+
+  Duration? getLastPosition(String? url) => _lastPositions[url];
+
   Future<void> dispose() async {
     await writePlayerState();
+    await _lastPositionsController.close();
     await _smtcSub?.cancel();
     await _mpris?.dispose();
     await _smtc?.disableSmtc();
