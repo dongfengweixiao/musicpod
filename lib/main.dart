@@ -12,15 +12,23 @@ import 'package:watch_it/watch_it.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yaru/yaru.dart';
 
-import 'app.dart';
-import 'external_path.dart';
-import 'library.dart';
-import 'local_audio.dart';
-import 'notifications.dart';
-import 'player.dart';
-import 'podcasts.dart';
-import 'radio.dart';
-import 'settings.dart';
+import 'app/app_model.dart';
+import 'app/view/app.dart';
+import 'external_path/external_path_service.dart';
+import 'library/library_model.dart';
+import 'library/library_service.dart';
+import 'local_audio/local_audio_model.dart';
+import 'local_audio/local_audio_service.dart';
+import 'notifications/notifications_service.dart';
+import 'player/player_model.dart';
+import 'player/player_service.dart';
+import 'podcasts/download_model.dart';
+import 'podcasts/podcast_model.dart';
+import 'podcasts/podcast_service.dart';
+import 'radio/radio_model.dart';
+import 'radio/radio_service.dart';
+import 'settings/settings_model.dart';
+import 'settings/settings_service.dart';
 
 Future<void> main(List<String> args) async {
   if (!isMobile) {
@@ -132,10 +140,7 @@ Future<void> main(List<String> args) async {
     playerModel,
     dispose: (s) => s.dispose(),
   );
-  di.registerSingleton<AppModel>(
-    AppModel(connectivity: connectivity),
-    dispose: (s) => s.dispose(),
-  );
+  di.registerSingleton<AppModel>(AppModel());
   di.registerSingleton<LibraryModel>(
     LibraryModel(libraryService),
     dispose: (s) => s.dispose(),
