@@ -173,8 +173,8 @@ class PlayerService {
       await setRate(1);
     }
     _audio = value;
-    await _setLocalColor(_audio);
     _propertiesChangedController.add(true);
+    await _setLocalColor(_audio);
   }
 
   bool _isVideo = false;
@@ -820,6 +820,7 @@ class PlayerService {
   }
 
   Future<void> stop() async {
+    await persistPlayerState();
     await _setAudio(null);
     _nextAudio = null;
     _queue = (name: '', audios: []);

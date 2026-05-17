@@ -50,11 +50,29 @@ class StationPage extends StatelessWidget with WatchItMixin, RadioConnectMixin {
       (_) => di<RadioManager>().getStationByUUIDCommand(uuid).run(),
     );
 
+    registerHandler(
+      select: (RadioManager m) => m.getStationByUUIDCommand(uuid).results,
+      handler: (context, results, cancel) {
+        if (results.isRunning) return;
+        if (results.hasError) {
+          context.toast(
+            Text(context.l10n.noStationFound),
+            action: SnackBarAction(
+              label: context.l10n.retry,
+              onPressed: () =>
+                  di<RadioManager>().getStationByUUIDCommand(uuid).run(),
+            ),
+          );
+        }
+      },
+    );
+
     final stationResult = watchValue(
       (RadioManager m) => m.getStationByUUIDCommand(uuid).results,
     );
     final station = stationResult.data;
     final error = stationResult.error;
+    final isRunning = stationResult.isRunning;
 
     final useYaruTheme = watchPropertyValue(
       (SettingsModel m) => m.useYaruTheme,
@@ -96,21 +114,30 @@ class StationPage extends StatelessWidget with WatchItMixin, RadioConnectMixin {
             );
           }
 
-          if (station == null) {
+          if (isRunning || station == null || stationResult.hasError) {
             return AdaptiveMultiLayoutBody(
               controlPanel: const SizedBox.shrink(),
               header: AudioPageHeader(
                 title: '',
-                image: Container(
-                  width: kMaxAudioPageHeaderHeight,
-                  height: kMaxAudioPageHeaderHeight,
-                  color: context.theme.cardColor,
-                ),
+                image: isRunning
+                    ? Container(
+                        width: kMaxAudioPageHeaderHeight,
+                        height: kMaxAudioPageHeaderHeight,
+                        color: context.theme.cardColor,
+                      )
+                    : null,
               ),
-              sliverBody: (_) => const SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(child: Progress()),
-              ),
+              sliverBody: (_) => isRunning
+                  ? const SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(child: Progress()),
+                    )
+                  : SliverNoSearchResultPage(
+                      message: Text(
+                        stationResult.error?.toString() ??
+                            context.l10n.stationNotFound,
+                      ),
+                    ),
             );
           }
 
