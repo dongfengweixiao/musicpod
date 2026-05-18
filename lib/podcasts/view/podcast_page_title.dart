@@ -12,9 +12,9 @@ class PodcastPageTitle extends StatelessWidget with WatchItMixin {
 
   @override
   Widget build(BuildContext context) {
-    watchPropertyValue((PodcastManager m) => m.podcastUpdatesLength);
+    final updates = watchValue((PodcastManager m) => m.updatesCommand);
     final title = di<PodcastManager>().getSubscribedPodcastName(feedUrl) ?? '';
-    final visible = di<PodcastManager>().podcastUpdateAvailable(feedUrl);
+    final visible = updates.contains(feedUrl);
     return Badge(
       backgroundColor: context.theme.colorScheme.primary,
       isLabelVisible: visible,
@@ -27,12 +27,14 @@ class PodcastPageTitle extends StatelessWidget with WatchItMixin {
   }
 }
 
-class PodcastPageSubTitle extends StatelessWidget {
+class PodcastPageSubTitle extends StatelessWidget with WatchItMixin {
   const PodcastPageSubTitle({super.key, required this.feedUrl});
 
   final String feedUrl;
 
   @override
-  Widget build(BuildContext context) =>
-      Text(di<PodcastManager>().getSubscribedPodcastArtist(feedUrl) ?? '');
+  Widget build(BuildContext context) {
+    watchValue((PodcastManager m) => m.togglePodcastCommand);
+    return Text(di<PodcastManager>().getSubscribedPodcastArtist(feedUrl) ?? '');
+  }
 }

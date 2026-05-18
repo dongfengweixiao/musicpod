@@ -35,7 +35,7 @@ class PodcastAudioTile extends StatelessWidget with WatchItMixin {
   final bool selected;
 
   final void Function()? startPlaylist;
-  final Future<void> Function() addPodcast;
+  final void Function() addPodcast;
 
   final bool isExpanded;
   final bool isOnline;

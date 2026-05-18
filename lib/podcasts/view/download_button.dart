@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_it/flutter_it.dart';
 
 import '../../common/data/audio.dart';
-import '../../common/view/confirm.dart';
 import '../../common/view/icons.dart';
 import '../../common/view/progress.dart';
-import '../../common/view/ui_constants.dart';
 import '../../extensions/build_context_x.dart';
 import '../../extensions/theme_data_x.dart';
 import '../../l10n/l10n.dart';
-import '../download_manager.dart';
 import '../podcast_manager.dart';
-import 'podcast_page_image.dart';
 
 class DownloadButton extends StatelessWidget with WatchItMixin {
   const DownloadButton({
@@ -24,19 +18,23 @@ class DownloadButton extends StatelessWidget with WatchItMixin {
   });
 
   final double? iconSize;
-  final Audio? audio;
-  final Future<void> Function() addPodcast;
+  final Audio audio;
+  final void Function() addPodcast;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final manager = di<DownloadManager>();
-    final value = watchPropertyValue(
-      (DownloadManager m) => m.getValue(audio?.url),
+
+    final progress = watchValue(
+      (PodcastManager m) => m.getDownloadCommand(audio).progress,
     );
-    final hasDownload = watchPropertyValue(
-      (PodcastManager m) => m.getDownload(audio?.url) != null,
+    final results = watchValue(
+      (PodcastManager m) => m.getDownloadCommand(audio).results,
     );
+    final result = results.data;
+    final isRunning = results.isRunning;
+
+    final hasDownload = result?.path != null;
 
     return Stack(
       alignment: Alignment.center,
@@ -51,62 +49,17 @@ class DownloadButton extends StatelessWidget with WatchItMixin {
             color: hasDownload ? theme.colorScheme.primary : null,
           ),
           onPressed: () {
-            if (hasDownload) {
-              manager.deleteDownload(audio: audio);
-            } else {
-              if (di<PodcastManager>().isPodcastSubscribed(audio?.feedUrl)) {
-                manager.startDownload(
-                  finishedMessage: context.l10n.downloadFinished(
-                    audio?.title ?? '',
-                  ),
-                  canceledMessage: context.l10n.downloadCancelled(
-                    audio?.title ?? '',
-                  ),
-                  audio: audio,
-                );
-              } else {
-                ConfirmationDialog.show(
-                  context: context,
-                  title: Text(context.l10n.addToCollection),
-                  constraints: const BoxConstraints(
-                    maxWidth: 300,
-                    maxHeight: 250,
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: kMediumSpace,
+            final downloadCommand = di<PodcastManager>().getDownloadCommand(
+              audio,
+            );
+            if (!di<PodcastManager>().isPodcastSubscribed(audio.feedUrl)) {
+              addPodcast();
+            }
 
-                    children: [
-                      SizedBox.square(
-                        dimension: 80,
-                        child: PodcastPageImage(
-                          imageUrl: audio?.albumArtUrl ?? audio?.imageUrl,
-                          showFallbackIcon: true,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          audio?.podcastTitle ?? context.l10n.unknown,
-                        ),
-                      ),
-                    ],
-                  ),
-                  onConfirm: () {
-                    unawaited(
-                      manager.startDownload(
-                        finishedMessage: context.l10n.downloadFinished(
-                          audio?.title ?? '',
-                        ),
-                        canceledMessage: context.l10n.downloadCancelled(
-                          audio?.title ?? '',
-                        ),
-                        audio: audio,
-                      ),
-                    );
-                    return addPodcast();
-                  },
-                );
-              }
+            if (downloadCommand.isRunning.value) {
+              downloadCommand.cancel();
+            } else {
+              downloadCommand.run(audio);
             }
           },
           iconSize: iconSize,
@@ -114,19 +67,20 @@ class DownloadButton extends StatelessWidget with WatchItMixin {
               ? theme.contrastyPrimary
               : theme.colorScheme.onSurface,
         ),
-        Positioned.fill(
-          child: IgnorePointer(
-            child: Padding(
-              padding: const EdgeInsets.all(1.5),
-              child: Progress(
-                adaptive: false,
-                padding: EdgeInsets.zero,
-                value: value == null || value == 1.0 ? 0 : value,
-                backgroundColor: Colors.transparent,
+        if (isRunning)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Padding(
+                padding: const EdgeInsets.all(1.5),
+                child: Progress(
+                  adaptive: false,
+                  padding: EdgeInsets.zero,
+                  value: progress == 1.0 ? 0 : progress,
+                  backgroundColor: Colors.transparent,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

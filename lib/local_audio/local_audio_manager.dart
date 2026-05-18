@@ -6,12 +6,13 @@ import 'package:safe_change_notifier/safe_change_notifier.dart';
 
 import '../app/page_ids.dart';
 import '../common/data/audio.dart';
+import '../common/no_error_filter.dart';
 import '../common/view/audio_filter.dart';
 import 'data/change_metadata_capsule.dart';
 import 'local_audio_service.dart';
 import 'playlist_action.dart';
 
-@lazySingleton
+@singleton
 class LocalAudioManager {
   LocalAudioManager({required LocalAudioService localAudioService})
     : _localAudioService = localAudioService {
@@ -124,7 +125,7 @@ class LocalAudioManager {
   >
   initAudiosCommand = Command.createAsyncWithProgress((param, handle) async {
     if (param.forceInit) {
-      _findAlbumCommands.clear();
+      _reset();
     }
 
     final localAudioResult = await _localAudioService.init(
@@ -231,10 +232,14 @@ class LocalAudioManager {
 
         return _localAudioService.pinnedAlbums;
       }, initialValue: _localAudioService.pinnedAlbums);
-}
 
-class NoErrorFilter extends ErrorFilter {
-  @override
-  ErrorReaction filter(Object error, StackTrace stackTrace) =>
-      ErrorReaction.throwException;
+  void _reset() {
+    changeMetadataCommand.value = null;
+    likedAudiosCommand.value = [];
+    allPlaylistsCommand.value = [];
+    togglePinnedAlbumCommand.value = [];
+    _findAlbumCommands.clear();
+    _playlistCommands.clear();
+    importExternalPlaylistsCommand.value = [];
+  }
 }
