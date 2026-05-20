@@ -11,8 +11,9 @@ import '../../custom_content/custom_content_model.dart';
 import '../../extensions/build_context_x.dart';
 import '../../extensions/string_x.dart';
 import '../../l10n/l10n.dart';
+import '../../local_audio/local_audio_manager.dart';
 import '../../player/player_service.dart';
-import '../../podcasts/download_manager.dart';
+import '../../podcasts/download_manager_master.dart';
 import '../../podcasts/podcast_manager.dart';
 import '../../search/search_model.dart';
 import '../settings_model.dart';
@@ -238,7 +239,7 @@ class _DownloadsTileState extends State<_DownloadsTile> {
     final l10n = context.l10n;
 
     final downloadsDirResults = watchValue(
-      (DownloadManager m) => m.downloadsDirCommand.results,
+      (DownloadManagerMaster m) => m.downloadsDirCommand.results,
     );
     final error = downloadsDirResults.error;
     final downloadsDir = downloadsDirResults.data;
@@ -257,8 +258,17 @@ class _DownloadsTileState extends State<_DownloadsTile> {
                   style: context.textTheme.bodyLarge,
                 ),
               ),
-              onConfirm: () => di<DownloadManager>().downloadsDirCommand
-                  .runAsync((setNewDir: true)),
+              onConfirm: () async {
+                final firstAudio = di<LocalAudioManager>()
+                    .initAudiosCommand
+                    .value
+                    ?.audios
+                    .firstOrNull;
+                if (firstAudio != null) {
+                  await di<DownloadManagerMaster>().downloadsDirCommand
+                      .runAsync((getDefault: false));
+                }
+              },
             ),
           );
         },
