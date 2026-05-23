@@ -11,6 +11,8 @@ import '../../player/player_service.dart';
 import '../../podcasts/data/podcast_download.dart';
 import '../../podcasts/download_manager_master.dart';
 import '../../podcasts/podcast_manager.dart';
+import '../../search/search_model.dart';
+import '../../search/search_timeout_exception.dart';
 import '../app_manager.dart';
 
 mixin CommonHandlersAndCommandsMixin {
@@ -51,22 +53,42 @@ mixin CommonHandlersAndCommandsMixin {
     );
 
     registerStreamHandler(
-      select: (PlayerModel m) => m.errorStream,
+      select: (PlayerModel m) => m.messageStream,
       handler: (context, newValue, cancel) {
-        if (newValue.hasData)
+        if (newValue.hasError) {
+          final audio = di<PlayerModel>().audio;
+
           context.toast(
-            Text(switch (newValue.data!) {
-              final PlayTimeoutException _ => context.l10n.playingMediaTimedOut,
-              final Exception e => e.toString(),
-            }),
+            Text(
+              (newValue.error is PlayTimeoutException) || audio?.url != null
+                  ? context.l10n.playerCouldNotOpenRemoteMedia(
+                      audio?.title ?? '',
+                    )
+                  : newValue.error.toString(),
+            ),
+            duration: const Duration(seconds: 8),
+            showCloseIcon: true,
           );
+        } else if (newValue.hasData) {
+          context.toast(Text(newValue.data!));
+        }
       },
     );
 
     registerStreamHandler(
-      select: (PlayerModel m) => m.messageStream,
+      select: (SearchModel m) => m.messageStream,
       handler: (context, newValue, cancel) {
-        if (newValue.hasData) context.toast(Text(newValue.data!));
+        if (newValue.hasError) {
+          context.toast(
+            Text(
+              newValue.error is SearchTimeoutException
+                  ? context.l10n.searchTimeoutMessage
+                  : newValue.error.toString(),
+            ),
+            duration: const Duration(seconds: 8),
+            showCloseIcon: true,
+          );
+        }
       },
     );
 

@@ -123,13 +123,18 @@ class PodcastService {
       }
     } catch (e) {
       printMessageInDebugMode('Podcast search error: $e');
-      return _searchResult;
+      rethrow;
     }
+
     printMessageInDebugMode(
       'Podcast search result: successful=${result.successful}, '
       'itemCount=${result.items.length}, '
       'query=$searchQuery',
     );
+
+    if (!result.successful) {
+      throw result.lastError;
+    }
 
     if (result.successful &&
         (searchQuery == null ||
@@ -160,7 +165,7 @@ class PodcastService {
   }) async {
     await loadPodcastUpdatesFromDb();
 
-    for (final feedUrl in toCheckFeedUrls) {
+    for (final (index, feedUrl) in toCheckFeedUrls.indexed) {
       final storedTimeStamp = getPodcastLastUpdated(feedUrl);
       final name = getSubscribedPodcastName(feedUrl);
 
@@ -203,7 +208,7 @@ class PodcastService {
         }
       }
 
-      updateProgress?.call(toCheckFeedUrls.length / toCheckFeedUrls.length);
+      updateProgress?.call((index + 1) / toCheckFeedUrls.length);
       await Future<void>.delayed(Duration.zero);
     }
 
@@ -708,18 +713,21 @@ class PodcastService {
   bool isPodcastSubscribed(String pageId) => _podcasts.contains(pageId);
 }
 
-Future<Podcast?> loadPodcast(String url) async {
-  try {
-    return await Feed.loadFeed(url: url);
-  } catch (e) {
-    printMessageInDebugMode(e);
-    return null;
-  }
-}
+Future<Podcast?> loadPodcast(String url) => Feed.loadFeed(url: url);
 
 class PodcastUpdate {
   final String feedUrl;
   final List<Audio> episodes;
 
   const PodcastUpdate({required this.feedUrl, required this.episodes});
+}
+
+class FindEpisodesTimeoutException implements Exception {
+  final String? message;
+
+  FindEpisodesTimeoutException({this.message});
+
+  @override
+  String toString() =>
+      message ?? 'Timeout while fetching episodes for the podcast';
 }
