@@ -7,9 +7,32 @@ class FlagTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const fallbackFonts = ['Noto Color Emoji', 'NotoEmoji'];
+
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     return Theme(
-      data: Theme.of(context).copyWith(
-        textTheme: TextTheme.of(context).apply(fontFamily: 'NotoEmoji'),
+      data: theme.copyWith(
+        textTheme: textTheme.copyWith(
+          bodyLarge: textTheme.bodyLarge?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+          bodyMedium: textTheme.bodyMedium?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+          bodySmall: textTheme.bodySmall?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+          titleLarge: textTheme.titleLarge?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+          titleMedium: textTheme.titleMedium?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+          titleSmall: textTheme.titleSmall?.copyWith(
+            fontFamilyFallback: fallbackFonts,
+          ),
+        ),
       ),
       child: child,
     );
