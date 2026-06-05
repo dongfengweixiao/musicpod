@@ -1,9 +1,12 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_service_mpris/audio_service_mpris.dart';
 import 'package:injectable/injectable.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../app/app_config.dart';
 import '../common/data/audio.dart';
 import '../common/data/audio_type.dart';
+import '../common/snap_detector.dart';
 import '../extensions/taget_platform_x.dart';
 import '../player/player_service.dart';
 
@@ -12,8 +15,29 @@ abstract class AudioServiceModule {
   @preResolve
   Future<AudioServiceHandler> audioServiceHandler(
     PlayerService playerService,
+    WindowManager windowManager,
   ) async {
+    if (isLinux) {
+      final mpris = await AudioServiceMpris.init(
+        dBusName: AppConfig.appName,
+        identity: AppConfig.appTitle,
+        desktopEntry: SnapDetector.isSnap
+            ? AppConfig.snapDesktopEntry
+            : AppConfig.desktopEntry,
+        canGoNext: true,
+        canGoPrevious: true,
+        canPlay: true,
+        canPause: true,
+        canControl: true,
+        enableLogging: false,
+        onRaiseRequest: windowManager.show,
+      );
+      mpris.desktopEntry = SnapDetector.isSnap
+          ? AppConfig.snapDesktopEntry
+          : AppConfig.desktopEntry;
+    }
     final handler = await _registerAudioServiceHandler(playerService);
+
     return handler;
   }
 }
