@@ -2447,29 +2447,30 @@ class AppLocalizationsEt extends AppLocalizations {
       'Kuna ühenduse loomine serveriga ei toiminud, siis taskuhäälingu osade leidmine ei õnnestunud. Kas sinu arvuti või seadme internetiühendus ikka toimib? Kui jah, siis võib ka olla tegemist serveri veaga.';
 
   @override
-  String get tryToFetchLyricsOnlineTitle => 'Try to fetch lyrics online';
+  String get tryToFetchLyricsOnlineTitle => 'Proovi laulusõnad laadida võrgust';
 
   @override
   String get tryToFetchLyricsOnlineDescription =>
-      'Do you want to try to fetch the lyrics online?';
+      'Kas soovid proovida laadida laulusõnu võrguteenustest?';
 
   @override
-  String get fetchingLyricsOnline => 'Fetching lyrics online, please wait ...';
+  String get fetchingLyricsOnline =>
+      'Laadin laulusõnu võrguteenustest, palun oota…';
 
   @override
   String get fetchingLyricsOnlineTimeoutMessage =>
-      'Fetching lyrics online takes longer than usual. Are you connected to the internet? If yes, this might be a server issue or the song might not be available';
+      'Laulusõnade võrgust laadimine kestab kauem, kui tavaliselt. Kas sinu arvuti või seadme internetiühendus ikka toimib? Kui jah, siis võib ka olla tegemist serveri veaga või selle laulu sõnu pole enam saadaval';
 
   @override
   String get fetchingLyricsOnlineFailed =>
-      'Fetching lyrics online failed. This might be a server issue or the song might not be available';
+      'Laulusõnade võrgust laadimine ei õnnestunud. Võib-olla server pole saadaval või selle laulu sõnad on eemaldatud';
 
   @override
-  String get onlineLyricsSourceTitle => 'Online lyrics source';
+  String get onlineLyricsSourceTitle => 'Laulusõnade võrgust laadimise allikas';
 
   @override
   String get onlineLyricsSourceDescription =>
-      'Select the source for online lyrics.';
+      'Vali teenus laulusõnade võrgust laadimiseks.';
 
   @override
   String get onlineLyricsSourceLrcLib => 'LrcLib';

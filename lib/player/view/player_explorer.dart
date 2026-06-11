@@ -8,7 +8,7 @@ import '../../radio/view/radio_history_list.dart';
 import '../../settings/settings_manager.dart';
 import '../player_manager.dart';
 import 'full_window_player_image.dart';
-import 'player_lyrics.dart';
+import '../../lyrics/view/lyrics_viewer.dart';
 import 'queue/queue_body.dart';
 
 class PlayerExplorer extends StatefulWidget with WatchItStatefulWidgetMixin {
@@ -89,7 +89,7 @@ class _PlayerExplorerState extends State<PlayerExplorer>
                 const RadioHistoryList(simpleList: true)
               else
                 QueueBody(selectedColor: widget.selectedColor),
-              const PlayerLyrics(),
+              const LyricsViewer(),
             ],
           ),
         ),

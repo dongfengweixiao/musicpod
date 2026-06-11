@@ -2438,29 +2438,29 @@ class AppLocalizationsIt extends AppLocalizations {
       'La ricerca degli episodi non è riuscita: impossibile connettersi al server. Sei connesso a Internet? Se sì, potrebbe trattarsi di un problema del server.';
 
   @override
-  String get tryToFetchLyricsOnlineTitle => 'Try to fetch lyrics online';
+  String get tryToFetchLyricsOnlineTitle => 'Prova a recuperare i testi online';
 
   @override
   String get tryToFetchLyricsOnlineDescription =>
-      'Do you want to try to fetch the lyrics online?';
+      'Vuoi provare a recuperare i testi online?';
 
   @override
-  String get fetchingLyricsOnline => 'Fetching lyrics online, please wait ...';
+  String get fetchingLyricsOnline => 'Recupero testi online...';
 
   @override
   String get fetchingLyricsOnlineTimeoutMessage =>
-      'Fetching lyrics online takes longer than usual. Are you connected to the internet? If yes, this might be a server issue or the song might not be available';
+      'Il recupero dei testi online richiede più tempo del solito. Sei connesso a Internet? Se sì, potrebbe trattarsi di un problema del server oppure il brano potrebbe non essere disponibile';
 
   @override
   String get fetchingLyricsOnlineFailed =>
-      'Fetching lyrics online failed. This might be a server issue or the song might not be available';
+      'Il recupero dei testi online non è riuscito. Potrebbe trattarsi di un problema del server oppure il brano potrebbe non essere disponibile';
 
   @override
-  String get onlineLyricsSourceTitle => 'Online lyrics source';
+  String get onlineLyricsSourceTitle => 'Fonte testi online';
 
   @override
   String get onlineLyricsSourceDescription =>
-      'Select the source for online lyrics.';
+      'Seleziona la fonte per i testi online.';
 
   @override
   String get onlineLyricsSourceLrcLib => 'LrcLib';

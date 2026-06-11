@@ -15,14 +15,14 @@ import '../../extensions/build_context_x.dart';
 import '../../extensions/command_x.dart';
 import '../../extensions/string_x.dart';
 import '../../extensions/theme_data_x.dart';
-import '../../lyrics/data/lyrics_and_art_result_and_param.dart';
-import '../../lyrics/lyrics_manager.dart';
+import '../data/lyrics_and_art_result_and_param.dart';
+import '../lyrics_manager.dart';
 import '../../settings/settings_manager.dart';
-import '../mpv_metadata_manager.dart';
-import '../player_manager.dart';
+import '../../player/mpv_metadata_manager.dart';
+import '../../player/player_manager.dart';
 
-class PlayerLyrics extends StatelessWidget with WatchItMixin {
-  const PlayerLyrics({super.key});
+class LyricsViewer extends StatelessWidget with WatchItMixin {
+  const LyricsViewer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +88,7 @@ class _PlayerLyricsState extends State<_PlayerLyrics> {
 
     return Column(
       spacing: kLargestSpace,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: watchValue((LyricsManager m) => m.command.results).toWidget(

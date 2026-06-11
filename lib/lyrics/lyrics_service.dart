@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 import '../app/app_config.dart';
 import '../common/logging.dart';
 import '../l10n/app_localizations.dart';
+import '../local_audio/persistence/local_audio_dao.dart';
 import 'data/lyrics_and_art_result_and_param.dart';
 
 @lazySingleton
@@ -45,6 +46,10 @@ class LocalLyricsService {
         if (file.existsSync()) {
           final lrcString = file.readAsStringSync();
           if (lrcString.isValidLrc) {
+            printInfoInDebugMode(
+              'Parsed local .lrc file at "$maybe"',
+              tag: '$LocalLyricsService',
+            );
             outputLrcLines = Lrc.parse(lrcString).lyrics;
           } else {
             outputString = lrcString;
@@ -63,9 +68,12 @@ class LocalLyricsService {
 
 @lazySingleton
 class OnlineLyricsService {
-  OnlineLyricsService({required Dio dio}) : _dio = dio;
+  OnlineLyricsService({required Dio dio, required LocalAudioDao localAudioDao})
+    : _dio = dio,
+      _localAudioDao = localAudioDao;
 
   final Dio _dio;
+  final LocalAudioDao _localAudioDao;
 
   final _cache = <String, LyricsAndArtResult>{};
   Timer? _debounceTimer;
@@ -121,6 +129,15 @@ class OnlineLyricsService {
             tag: '$OnlineLyricsService',
           );
           if (_completer?.isCompleted == false) {
+            final lrcLines = lyricsAndArtResult.lrcLines;
+            if (artist != null && lrcLines != null && lrcLines.isNotEmpty) {
+              await _localAudioDao.updateLyricsForTitleAndArtistAndAlbum(
+                title: title,
+                artist: artist,
+                album: album,
+                lyrics: lrcLines.map((line) => line.formattedLine).join('\n'),
+              );
+            }
             _cache[cacheKey] = lyricsAndArtResult;
             _completer?.complete(lyricsAndArtResult);
           }
@@ -165,7 +182,7 @@ class OnlineLyricsService {
           cancelToken: cancelToken,
         )
         .timeout(
-          const Duration(seconds: 10),
+          FetchOnlineLyricsTimeoutException.timeoutDuration,
           onTimeout: () {
             cancelToken.cancel('Request timed out');
             throw FetchOnlineLyricsTimeoutException(
@@ -216,7 +233,7 @@ class FetchOnlineLyricsTimeoutException implements Exception {
   final String message;
   FetchOnlineLyricsTimeoutException(this.message);
 
-  static const Duration timeoutDuration = Duration(seconds: 10);
+  static const Duration timeoutDuration = Duration(seconds: 20);
 
   @override
   String toString() => 'FetchOnlineLyricsTimeoutException: $message';

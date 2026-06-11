@@ -114,9 +114,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1009.LicenseStore>(() => _i1009.LicenseStore());
     gh.lazySingleton<_i115.Database>(() => databaseModule.database);
-    gh.lazySingleton<_i546.OnlineLyricsService>(
-      () => _i546.OnlineLyricsService(dio: gh<_i361.Dio>()),
-    );
     gh.lazySingleton<_i328.OnlineArtService>(
       () => _i328.OnlineArtService(dio: gh<_i361.Dio>()),
     );
@@ -128,12 +125,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i414.RadioDao>(
       () => _i414.RadioDao(db: gh<_i115.Database>()),
-    );
-    gh.factoryCached<_i23.LyricsManager>(
-      () => _i23.LyricsManager(
-        localLyricsService: gh<_i546.LocalLyricsService>(),
-        onlineLyricsService: gh<_i546.OnlineLyricsService>(),
-      ),
     );
     gh.lazySingleton<_i635.OnlineArtManager>(
       () => _i635.OnlineArtManager(
@@ -166,6 +157,12 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
       ),
     );
+    gh.lazySingleton<_i546.OnlineLyricsService>(
+      () => _i546.OnlineLyricsService(
+        dio: gh<_i361.Dio>(),
+        localAudioDao: gh<_i688.LocalAudioDao>(),
+      ),
+    );
     gh.singleton<_i749.RadioManager>(
       () => _i749.RadioManager(radioService: gh<_i811.RadioService>()),
     );
@@ -175,6 +172,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i348.ListenBrainzService>(
       () => _i348.ListenBrainzService(
         settingsService: gh<_i763.SettingsService>(),
+      ),
+    );
+    gh.factoryCached<_i23.LyricsManager>(
+      () => _i23.LyricsManager(
+        localLyricsService: gh<_i546.LocalLyricsService>(),
+        onlineLyricsService: gh<_i546.OnlineLyricsService>(),
       ),
     );
     gh.lazySingleton<_i721.PodcastService>(

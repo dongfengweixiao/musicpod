@@ -30,7 +30,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get repeatAll => '全部重复';
 
   @override
-  String get repeatOff => 'Repeat Off';
+  String get repeatOff => '关闭重复';
 
   @override
   String get next => '下一个';
@@ -442,20 +442,20 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String downloadRemoved(String name) {
-    return 'Download removed: $name';
+    return '下载已移除：$name';
   }
 
   @override
   String get markAllEpisodesAsDone => '将所有剧集标记为已完成';
 
   @override
-  String get markEpisodeAsDone => 'Mark episode as done';
+  String get markEpisodeAsDone => '将该节目记为完成';
 
   @override
-  String get hideCompletedEpisodes => 'Hide completed episodes';
+  String get hideCompletedEpisodes => '隐藏已完成的节目';
 
   @override
-  String get showCompletedEpisodes => 'Show completed episodes';
+  String get showCompletedEpisodes => '显示已完成的节目';
 
   @override
   String get reset => '重置';
@@ -2081,11 +2081,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get useCustomThemeColorDescription => '该选项允许您为当前主题选择自定义强调色。';
 
   @override
-  String get usePlayerColorTitle => 'Use player color';
+  String get usePlayerColorTitle => '使用播放器颜色';
 
   @override
-  String get usePlayerColorDescription =>
-      'This will use the dominant color has been extracted out of the current artwork (if available) for the whole app.';
+  String get usePlayerColorDescription => '这将采用从应用程序当前展示的艺术作品中（如果有的话）提取的主要颜色。';
 
   @override
   String get selectColor => '选择颜色';
@@ -2111,295 +2110,276 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String downloadsOfLatestRelease(String latestRelease) {
-    return 'Downloaded $latestRelease times outside of snapstore and flathub';
+    return '$latestRelease 次下载，来源非 Snapstore 和 Flathub';
   }
 
   @override
-  String get useBlurredPlayerBackgroundTitle => 'Use blurred player background';
+  String get useBlurredPlayerBackgroundTitle => '使用播放器模糊效果背景';
 
   @override
   String get useBlurredPlayerBackgroundDescription =>
-      'This will blur the background of the player. This might lead to lower performance on some devices.';
+      '启用此选项将使播放器背景变得模糊。请注意，在某些设备上可能会因此降低性能。';
 
   @override
-  String get loadingPleaseWait => 'Loading, please wait ...';
+  String get loadingPleaseWait => '载入中，请等待……';
 
   @override
-  String get parsingLocalAudioFilesMetadataPleaseWait =>
-      'Parsing local audio files metadata, please wait ...';
+  String get parsingLocalAudioFilesMetadataPleaseWait => '解析本地音频文件的元数据，请等待……';
 
   @override
   String get persistingLocalAudioFilesMetadataPleaseWait =>
-      'Persisting local audio files metadata, please wait ...';
+      '正在保存本地音频文件的元数据，请等待……';
 
   @override
-  String get buildingLocalAudioLibraryPleaseWait =>
-      'Building local audio library, please wait ...';
+  String get buildingLocalAudioLibraryPleaseWait => '正在建立本地音频文件库，请等待……';
 
   @override
-  String get importingPodcastsPleaseWait =>
-      'Importing your podcasts, please wait ...';
+  String get importingPodcastsPleaseWait => '正在导入您的播客，请等待……';
 
   @override
-  String get exportingPodcastsPleaseWait =>
-      'Exporting your podcasts, please wait ...';
+  String get exportingPodcastsPleaseWait => '正在导出您的播客，请等待……';
 
   @override
-  String get importingStationsPleaseWait =>
-      'Importing your stations, please wait ...';
+  String get importingStationsPleaseWait => '正在导入您的电台，请等待……';
 
   @override
-  String get exportingStationsPleaseWait =>
-      'Exporting your stations, please wait ...';
+  String get exportingStationsPleaseWait => '正在导出您的电台，请等待……';
 
   @override
-  String get importingPlaylistsPleaseWait =>
-      'Importing your playlists, please wait ...';
+  String get importingPlaylistsPleaseWait => '正在导入您的播放列表，请等待……';
 
   @override
-  String get exportingPlaylistsPleaseWait =>
-      'Exporting your playlists, please wait ...';
+  String get exportingPlaylistsPleaseWait => '正在导出您的播放列表，请等待……';
 
   @override
   String checkingForUpdatesPleaseWait(int progress) {
-    return 'Checking for updates $progress%';
+    return '检查更新中，进度 $progress%';
   }
 
   @override
-  String get author => 'Author';
+  String get author => '作者';
 
   @override
-  String get rating => 'Rating';
+  String get rating => '评分';
 
   @override
-  String get keywords => 'Keywords';
+  String get keywords => '关键词';
 
   @override
   String newEpisodesAvailableFor(int length) {
-    return 'New episodes available for $length podcasts';
+    return '有 $length 个播客更新了新节目';
   }
 
   @override
-  String get lyrics => 'Lyrics';
+  String get lyrics => '歌词';
 
   @override
-  String get noLyricsFound => 'No lyrics found';
+  String get noLyricsFound => '未找到歌词';
 
   @override
-  String get autoScrolling => 'Auto scroll';
+  String get autoScrolling => '自动滚动';
 
   @override
-  String get genericErrorTitle => 'An error occurred';
+  String get genericErrorTitle => '哎呀，出错啦';
 
   @override
-  String get genericErrorDescription =>
-      'An unexpected error occurred. Please try again later.';
+  String get genericErrorDescription => '哎呀，出错啦。请稍后重试。';
 
   @override
   String errorDetails(String details) {
-    return 'Error details: $details';
+    return '错误详情： $details';
   }
 
   @override
-  String get appendToQueue => 'Append to queue';
+  String get appendToQueue => '添加到队列';
 
   @override
   String appendedToQueue(String title) {
-    return 'Appended to queue: $title';
+    return '添加到队列： $title';
   }
 
   @override
   String appendMediaToQueueDescription(String title) {
-    return '$title is already inside the queue. Do you want to append it to the end of the queue?';
+    return '$title 已经位于队列中。是否要将它添加到队列的末尾？';
   }
 
   @override
-  String get appendMediaToQueueTitle => 'Append media to queue';
+  String get appendMediaToQueueTitle => '添加媒体到队列';
 
   @override
   String appendMediaToQueue(String title) {
-    return 'Append media to queue: $title';
+    return '添加媒体到队列： $title';
   }
 
   @override
-  String get explore => 'Explore';
+  String get explore => '导出';
 
   @override
-  String get favorites => 'Favorites';
+  String get favorites => '收藏';
 
   @override
-  String get autoMovePlayerTitle => 'Auto move player';
+  String get autoMovePlayerTitle => '自动移动播放器';
 
   @override
-  String get autoMovePlayerDescription =>
-      'Move the player to the right if there is enough horizontal space';
+  String get autoMovePlayerDescription => '如果水平空间允许，播放器将移至右侧';
 
   @override
-  String get onlineLyricsNotSetup =>
-      'If you want to fetch lyrics from Genius, please provide an API key in the settings.';
+  String get onlineLyricsNotSetup => '若需从 Genius 获取歌词，请在设置中输入API密钥。';
 
   @override
   String get settingsGeniusDisclaimer =>
-      'MusicPod, its contributors, and the Genius API are not responsible for any misuse of the API key. By providing your API key, you agree to use it responsibly and in accordance with Genius terms of service.\n\n';
+      'MusicPod 及其贡献者、Genius API 均不承担因 API 密钥滥用而产生的一切责任。提交 API 密钥即意味着您承诺将依据 Genius 的服务条款，合理使用该密钥。\n\n';
 
   @override
   String get settingsGeniusDescription =>
-      'To fetch lyrics from Genius, you need to provide a Genius API Key. You can obtain an API key by creating an account on Genius and registering an application to get your access token.';
+      '为了从 Genius 获取歌词，您需要提供 Genius API 密钥。首先，在 Genius 上创建一个账户，然后注册一个新的应用程序以获取访问令牌（API密钥）。';
 
   @override
   String get settingsDoNotAskForGeniusTitle =>
-      'Do not use Genius or ask for Genius API Key again';
+      '请勿再次使用 Genius 服务或请求 Genius API 密钥';
 
   @override
   String get settingsDoNotAskForGeniusDescription =>
-      'This prevents the app from prompting for the Genius API key in the future and makes the lyrics feature fully rely on local LRC files or LRC strings embedded in audio metadata.';
+      '此设置将避免应用在未来再次提示输入 Genius API 密钥，转而完全依赖本地 LRC 文件或音频元数据中嵌入的 LRC 歌词。';
 
   @override
   String get tosLink => 'https://genius.com/static/terms';
 
   @override
-  String get tosLinkText => 'Read Genius\'s Terms of Service';
+  String get tosLinkText => '查看 Genius 的服务条款';
 
   @override
-  String get oopsSomethingWentWrong => 'Oops, something went wrong!';
+  String get oopsSomethingWentWrong => '哎呀，出错啦！';
 
   @override
-  String get retry => 'Retry';
+  String get retry => '重试';
 
   @override
-  String get reportIssue => 'Report this issue';
+  String get reportIssue => '提交该问题';
 
   @override
-  String get ignoreThisTitleInHearingHistory =>
-      'Ignore this title in hearing history';
+  String get ignoreThisTitleInHearingHistory => '在收听记录中排除这个标题';
 
   @override
-  String get removeFromIgnoredHearyHistoryTitles =>
-      'Remove from ignored titles';
+  String get removeFromIgnoredHearyHistoryTitles => '从忽略列表中移除';
 
   @override
-  String get ignoredHearyHistoryTitlesTitle => 'Ignored titles';
+  String get ignoredHearyHistoryTitlesTitle => '忽略标题';
 
   @override
   String get ignoredHearyHistoryTitlesDescription =>
-      'These titles will be ignored in the hearing history and will not be shown in the recently played list.';
+      '这些标题在收听记录中将被忽略，且不会出现在最近播放的列表里。';
 
   @override
-  String get playingMediaTimedOut =>
-      'Playing media timed out. This might be caused by a network error or server issues.';
+  String get playingMediaTimedOut => '媒体播放超时，可能是由于网络故障或服务器问题所致。';
 
   @override
-  String get playbackWasPausedByTimer => 'Playback was paused by timer';
+  String get playbackWasPausedByTimer => '播放已由定时器暂停';
 
   @override
-  String get playbackTimerCancelled => 'Playback timer cancelled';
+  String get playbackTimerCancelled => '播放定时已取消';
 
   @override
   String get podcastDoesNotSendEpisodeDuration =>
-      'This podcast does not send episode duration. The mark done feature might not work as expected.';
+      '此播客未提供节目时长信息，因此“标记完成”功能可能无法正常运作。';
 
   @override
   String cleanedUpEpisodesOfUnsubscribedPodcast(String podcastName) {
-    return 'Cleaned up episodes of unsubscribed podcast: $podcastName';
+    return '已移除取消订阅的播客 $podcastName 中的节目';
   }
 
   @override
   String findEpisodesTimeoutMessage(String podcastName) {
-    return 'Finding episodes takes longer than usual. Are you connected to the internet? If yes, this might be a server issue.';
+    return '查找节目所需时间比平时长。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
   }
 
   @override
   String get radioBrowserServerUnavailable =>
-      'The radio browser server is currently unavailable. This might be a temporary issue. Please try again later.';
+      '无线电浏览器服务器目前无法访问，可能是暂时的网络问题。请稍后再尝试连接。';
 
   @override
   String get findStationsTimeoutMessage =>
-      'Finding (this) station(s) takes longer than usual. Are you connected to the internet? If yes, this might be a server issue.';
+      '查找电台所需时间比平时长。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
   String retryInSeconds(String seconds) {
-    return 'Retry in $seconds seconds';
+    return '将在 $seconds 秒后再次尝试';
   }
 
   @override
   String retryngInSeconds(String seconds) {
-    return 'Retryng in $seconds seconds';
+    return '将在 $seconds 秒后再次尝试';
   }
 
   @override
   String playerCouldNotOpenRemoteMedia(String media) {
-    return 'The player could not open or maintain to play remote media \'$media\'. Are you connected to the internet? If yes, this might be a server issue.';
+    return '播放器无法打开或持续播放远程媒体 ’$media\'。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
   }
 
   @override
   String get searchTimeoutMessage =>
-      'Searching takes longer than usual. Are you connected to the internet? If yes, this might be a server issue.';
+      '搜索所需时间比平时长。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
-  String get youCanEditTheNameLater => 'You can edit the name later.';
+  String get youCanEditTheNameLater => '您可以在之后修改名称。';
 
   @override
   String get geniusAlsoProvidesArt =>
-      'Genius also provides artwork for most songs. If you enable Genius to fetch lyrics, the online art in the player will also use Genius instead of MusicBrainz.';
+      'Genius 为多数歌曲提供了艺术品。若您选择通过 Genius 获取歌词，播放器中的在线艺术品也将优先使用 Genius 而非 MusicBrainz 的资源。';
 
   @override
-  String get enterYourGeniusApiKey => 'Enter your Genius API key';
+  String get enterYourGeniusApiKey => '请输入您的Genius API密钥';
 
   @override
-  String get saveYourApiKey => 'Save API Key';
+  String get saveYourApiKey => '保存 API 密钥';
 
   @override
   String get lookUpRadioBrowserHostsFailed =>
-      'Looking up radio browser hosts failed. Are you connected to the internet? If yes, this might be a server issue.';
+      '无法找到无线电浏览器的主机。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
   String get lookUpRadioBrowserHostsTimouted =>
-      'Finding Radio Browser hosts takes longer than usual. Are you connected to the internet? If yes, this might be a server issue.';
+      '查找无线电浏览器主机所需时间比平时长。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
-  String get radioBrowserServerNotConnected =>
-      'You are not connected to any radio browser server';
+  String get radioBrowserServerNotConnected => '您尚未连接到任何无线电浏览器服务器';
 
   @override
-  String get radioBrowserLoadingTagsFailed =>
-      'An error occurred while loading radio tags, the server might be unavailable.';
+  String get radioBrowserLoadingTagsFailed => '在加载无线电标签时遇到错误，可能是服务器不可用所致。';
 
   @override
   String get radioBrowserLoadingTagsTimeouted =>
-      'Loading tags took longer than expected, are you connected to the internet? If yes, this might be a server issue';
+      '加载标签的时间比预期长。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题';
 
   @override
   String get podcastSearchNotSuccessfull =>
-      'This podcast search was not successfull, are you connected to the internet? If yes this might be a server issue.';
+      '播客搜索未能成功。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
   String get podcastFailedHostLookup =>
-      'Finding episodes was not successfull - could not connect to the server. Are you connected to the internet? If yes this might be a server issue.';
+      '查找节目失败，无法连接到服务器。请确认您是否已连接到互联网。如果已连接，可能是服务器出现了问题。';
 
   @override
-  String get tryToFetchLyricsOnlineTitle => 'Try to fetch lyrics online';
+  String get tryToFetchLyricsOnlineTitle => '尝试获取在线歌词';
 
   @override
-  String get tryToFetchLyricsOnlineDescription =>
-      'Do you want to try to fetch the lyrics online?';
+  String get tryToFetchLyricsOnlineDescription => '是否尝试获取在线歌词？';
 
   @override
-  String get fetchingLyricsOnline => 'Fetching lyrics online, please wait ...';
+  String get fetchingLyricsOnline => '正在获取在线歌词，请稍后……';
 
   @override
   String get fetchingLyricsOnlineTimeoutMessage =>
-      'Fetching lyrics online takes longer than usual. Are you connected to the internet? If yes, this might be a server issue or the song might not be available';
+      '在线获取歌词的时间比预期长。请确认您是否已连接到互联网。如果已连接，可能是服务器问题，或者该歌曲无法获取';
 
   @override
-  String get fetchingLyricsOnlineFailed =>
-      'Fetching lyrics online failed. This might be a server issue or the song might not be available';
+  String get fetchingLyricsOnlineFailed => '无法在线获取歌词，可能是服务器问题或该歌曲无法获取';
 
   @override
-  String get onlineLyricsSourceTitle => 'Online lyrics source';
+  String get onlineLyricsSourceTitle => '在线歌词源';
 
   @override
-  String get onlineLyricsSourceDescription =>
-      'Select the source for online lyrics.';
+  String get onlineLyricsSourceDescription => '选择在线歌词源。';
 
   @override
   String get onlineLyricsSourceLrcLib => 'LrcLib';

@@ -249,7 +249,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get government => 'Politika';
 
   @override
-  String get healthAndFitness => 'Zdravie a fitnes';
+  String get healthAndFitness => 'Zdravie a kondícia';
 
   @override
   String get history => 'Dejiny';
@@ -740,7 +740,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get filmXXXPodcastIndexOnly => 'Film';
 
   @override
-  String get fitnessXXXPodcastIndexOnly => 'Fitnes';
+  String get fitnessXXXPodcastIndexOnly => 'Kondícia';
 
   @override
   String get foodXXXPodcastIndexOnly => 'Jedlo';
@@ -1927,7 +1927,7 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get regionUnitedstatesminoroutlyingislands =>
-      'Menšie odľahlé ostrovy USA';
+      'Menšie odľahlé ostrovy Spojených štátov';
 
   @override
   String get regionUruguay => 'Uruguaj';
@@ -2445,29 +2445,31 @@ class AppLocalizationsSk extends AppLocalizations {
       'Hľadanie epizód nebolo úspešné - nepodarilo sa pripojiť k serveru. Ste pripojení na internet? Ak áno, môže ísť o problém so serverom.';
 
   @override
-  String get tryToFetchLyricsOnlineTitle => 'Try to fetch lyrics online';
+  String get tryToFetchLyricsOnlineTitle =>
+      'Pokúsiť sa získať text piesne online';
 
   @override
   String get tryToFetchLyricsOnlineDescription =>
-      'Do you want to try to fetch the lyrics online?';
+      'Chcete sa pokúsiť získať text piesne online?';
 
   @override
-  String get fetchingLyricsOnline => 'Fetching lyrics online, please wait ...';
+  String get fetchingLyricsOnline =>
+      'Získavam text piesne online, čakajte prosím ...';
 
   @override
   String get fetchingLyricsOnlineTimeoutMessage =>
-      'Fetching lyrics online takes longer than usual. Are you connected to the internet? If yes, this might be a server issue or the song might not be available';
+      'Získavanie textu piesne online trvá dlhšie než obvykle. Ste pripojený na internet. Ak áno, môže ísť o problém servera alebo text piesne nemusí byť dostupný';
 
   @override
   String get fetchingLyricsOnlineFailed =>
-      'Fetching lyrics online failed. This might be a server issue or the song might not be available';
+      'Získavanie textu piesne online zlyhalo. Môže ísť o problém servera alebo text piesne nemusí byť dostupný';
 
   @override
-  String get onlineLyricsSourceTitle => 'Online lyrics source';
+  String get onlineLyricsSourceTitle => 'Zdroj online textov piesní';
 
   @override
   String get onlineLyricsSourceDescription =>
-      'Select the source for online lyrics.';
+      'Vyberte zdroj pre online texty piesní.';
 
   @override
   String get onlineLyricsSourceLrcLib => 'LrcLib';

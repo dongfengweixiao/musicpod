@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../common/data/audio.dart';
 import '../../common/data/audio_type.dart';
+import '../../common/logging.dart';
 import '../../common/persistence/database.dart';
 import '../../common/view/audio_filter.dart';
 
@@ -618,6 +619,44 @@ class LocalAudioDao {
     }).toList();
   }
 
+  Future<void> updateLyricsForTitleAndArtistAndAlbum({
+    required String title,
+    required String artist,
+    required String? album,
+    required String lyrics,
+  }) async {
+    printInfoInDebugMode(
+      'Updating lyrics in DB for "$title" by "$artist"${album != null ? ' from album "$album"' : ''}',
+      tag: '$LocalAudioDao',
+    );
+    final query = _db.select(_db.trackTable).join([
+      leftOuterJoin(
+        _db.albumTable,
+        _db.albumTable.id.equalsExp(_db.trackTable.album),
+      ),
+      innerJoin(
+        _db.artistTable,
+        _db.artistTable.name.equalsExp(_db.trackTable.artist),
+      ),
+    ]);
+
+    query.where(_db.trackTable.name.equals(title));
+    query.where(_db.artistTable.name.equals(artist));
+    if (album != null) {
+      query.where(_db.albumTable.name.equals(album));
+    } else {
+      query.where(_db.albumTable.name.isNull());
+    }
+
+    final rows = await query.get();
+    for (final row in rows) {
+      final track = row.readTable(_db.trackTable);
+      await (_db.update(_db.trackTable)
+            ..where((t) => t.path.equals(track.path)))
+          .write(TrackTableCompanion(lyrics: Value(lyrics)));
+    }
+  }
+
   Future<int?> updateSingleTrackInDb(
     Audio audio, {
     String? artist,
@@ -628,6 +667,7 @@ class LocalAudioDao {
     String? trackNumber,
     String? year,
     List<Picture>? pictures,
+    String? lyrics,
   }) async {
     if (audio.path == null) return null;
 
@@ -720,6 +760,7 @@ class LocalAudioDao {
         album: (album != null || (artist != null && trackRow.album != null))
             ? Value(targetAlbumId)
             : const Value.absent(),
+        lyrics: lyrics != null ? Value(lyrics) : const Value.absent(),
       );
 
       await (_db.update(
