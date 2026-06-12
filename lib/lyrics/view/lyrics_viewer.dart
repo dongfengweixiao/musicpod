@@ -90,8 +90,7 @@ class _PlayerLyricsState extends State<_PlayerLyrics> {
 
     registerHandler(
       select: (LyricsManager m) => m.command,
-      handler: (context, _, __) =>
-          di<RetryManager>().removeRetry(retryViewId: 'lyrics'),
+      handler: (context, _, __) => RetryManager.dispose('lyrics'),
     );
 
     return Column(
@@ -105,9 +104,9 @@ class _PlayerLyricsState extends State<_PlayerLyrics> {
             onError: (error, lastResult, param) => Center(
               child: ErrorRetryBody(
                 error: error,
-                retryViewId: 'lyrics',
                 errorTextStyle: context.textTheme.bodyLarge,
                 retryCapsule: RetryCapsule(
+                  retryViewId: 'lyrics',
                   onRetry: () => di<LyricsManager>().command.runRestricted(
                     param: LyricsAndArtParam(
                       audio: widget.audio,
